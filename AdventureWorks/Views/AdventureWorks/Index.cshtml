@@ -1,0 +1,90 @@
+﻿
+@model PagedList.IPagedList<AdventureWorks.Models.DatabaseLog>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+    @using (Html.BeginForm("Index", "AdventureWorks", FormMethod.Get, new { id = "form1" }))
+
+    {
+        <div id='Paging' style="text-align: center">
+            @*Dorpdownlist generation code*@
+            Page Size: @Html.DropDownList("pageSize")
+
+            <br />(Nos. of Records To Display)
+            <br />
+            <br />
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+            of @Model.PageCount
+
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = ViewBag.psize }))
+        </div>
+    }
+    <table class="table">
+        <tr>
+            <th>
+                @Html.ActionLink("DatabaseLogID", "Index", new { sortOrder = "DatabaseLogID", CurrentSort = ViewBag.CurrentSort })
+            </th>
+            <th>
+                @Html.ActionLink("DatabaseUser", "Index", new { sortOrder = "DatabaseUser", CurrentSort = ViewBag.CurrentSort })
+            </th>
+            <th>
+                @Html.ActionLink("Event", "Index", new { sortOrder = "Event", CurrentSort = ViewBag.CurrentSort })
+            </th>
+            <th>
+                @Html.ActionLink("Schema", "Index", new { sortOrder = "Schema", CurrentSort = ViewBag.CurrentSort })
+            </th>
+            <th>
+                @Html.ActionLink("Object", "Index", new { sortOrder = "Object", CurrentSort = ViewBag.CurrentSort })
+            </th>
+            <th>
+                @Html.ActionLink("TSQL", "Index", new { sortOrder = "TSQL", CurrentSort = ViewBag.CurrentSort })
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DatabaseLogID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DatabaseUser)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Event)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Schema)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Object)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TSQL)
+                </td>
+            </tr>
+        }
+    </table>
+    <br />
+    @*<div id='Paging' style="text-align:center">
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+            of @Model.PageCount
+
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+        </div>*@
+    <script type="text/javascript">
+        $(function () {
+            $("#pageSize").change(function () {
+               // alert("abc");
+                $("#form1").submit();
+            });
+        });
+    </script>
+</div>
